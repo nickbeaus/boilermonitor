@@ -1,0 +1,20 @@
+# Edit User and the paths, then:
+#   sudo cp systemd/*.service /etc/systemd/system/ && sudo systemctl daemon-reload
+#   sudo systemctl enable --now boilermonitor-tunnel boilermonitor
+[Unit]
+Description=Boiler PLC alarm bridge (voip.ms SMS + FreePBX calls)
+After=network-online.target boilermonitor-tunnel.service
+Wants=network-online.target boilermonitor-tunnel.service
+
+[Service]
+User=youruser
+WorkingDirectory=/home/youruser/boilermonitor
+ExecStart=/home/youruser/boilermonitor/venv/bin/python -u plc_alarm_bridge.py
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+# SSH tunnel: local 127.0.0.1:5038 -> PBX 127.0.0.1:5038 (AMI stays on PBX localhost)
+# Edit User and the paths, then:
+#   sudo cp systemd/*.service /etc/systemd/system/ && sudo systemctl daemon-reload
+[Unit]
+Description=SSH tunnel to FreePBX AMI (localhost:5038)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=youruser
+EnvironmentFile=/home/youruser/boilermonitor/.env
+ExecStart=/usr/bin/ssh -N -i ${PBX_SSH_KEY} \
+  -o BatchMode=yes -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=15 -o ServerAliveCountMax=3 \
+  -L 127.0.0.1:5038:127.0.0.1:5038 ${PBX_SSH_TARGET}
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
