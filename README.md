@@ -28,7 +28,7 @@ reach the PLC.
 
 ```bash
 sudo apt install -y python3-venv mbpoll
-git clone <this repo> ~/boilermonitor && cd ~/boilermonitor
+git clone https://github.com/nickbeaus/boilermonitor ~/boilermonitor && cd ~/boilermonitor
 python3 -m venv venv
 venv/bin/pip install -r requirements.txt
 cp .env.example .env && chmod 600 .env
